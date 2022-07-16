@@ -2,43 +2,100 @@
 
 * Stack DS
 
-** Nearest greater to left
+** Nearest greater to left (unique elements)
 #+begin_src cpp
 
-vector<int> arr = {1,5,3,2,4};
-stack<int> s;
-unordered_map<int,int> hash;
-vector<int> res;
+    vector<int> arr = {1,5,3,2,4};
+    stack<int> s;
+    unordered_map<int,int> hash;
+    vector<int> res;
 
-for(auto &x : arr){
-    while(s.size() && s.top() < x){
-        s.pop();
+    for(auto &x : arr){
+        while(s.size() && s.top() < x){
+            s.pop();
+        }
+        if(s.size() && x < s.top()) hash[x] = s.top();
+        s.push(x);
     }
-    if(s.size() && x < s.top()) hash[x] = s.top();
-    s.push(x);
-}
-for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
-for(auto &x : res) cout << x << " ";
+    for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
+    for(auto &x : res) cout << x << " ";
 
 #+end_src
 
-**  Nearest greater to right
+**  Nearest greater to right (unique elements)
 
 #+begin_src cpp
 
-vector<int> arr = {1,5,3,2,4};
-stack<int> s;
-unordered_map<int,int> hash;
-vector<int> res;
+    vector<int> arr = {1,5,3,2,4};
+    stack<int> s;
+    unordered_map<int,int> hash;
+    vector<int> res;
 
-for(auto &x : arr){
-    while(s.size() && s.top() < x){
-        hash[s.top()] = x;
-        s.pop();
+    for(auto &x : arr){
+        while(s.size() && s.top() < x){
+            hash[s.top()] = x;
+            s.pop();
+        }
+        s.push(x);
     }
-    s.push(x);
-}
-for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
-for(auto &x : res) cout << x << " ";
+    for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
+    for(auto &x : res) cout << x << " ";
 
 #+end_src
+
+**  Nearest smaller to right (unique elements)
+
+#+begin_src cpp
+
+    vector<int> arr = {1,5,3,2,4};
+    stack<int> s;
+    unordered_map<int,int> hash;
+    vector<int> res;
+
+    for(auto &x : arr){
+        while(s.size() && s.top() > x){
+            hash[s.top()] = x;
+            s.pop();
+        }
+        s.push(x);
+    }
+    for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
+    for(auto &x : res) cout << x << " ";
+
+#+end_src
+
+**  Nearest smaller to right (unique elements)
+#+begin_src cpp
+
+    vector<int> arr = {1,5,3,2,4};
+    stack<int> s;
+    unordered_map<int,int> hash;
+    vector<int> res;
+
+    for(auto &x : arr){
+        while(s.size() && s.top() > x){
+            s.pop();
+        }
+        if(s.size() && s.top() < x) hash[x] = s.top();
+        s.push(x);
+    }
+    for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
+    for(auto &x : res) cout << x << " ";
+
+#+end_src
+
+** Reverse string using stack
+#+begin_src cpp
+
+    string st =  "abcdefgh";
+    stack<char>s;
+    string res = "";
+    for(int i = 0; i < st.length(); i++) s.push(st[i]);
+    while(!s.empty()){
+        res += s.top();
+        s.pop();
+    }
+    cout << res;
+
+#+end_src
+
