@@ -1,0 +1,44 @@
+#+title: Stack
+
+* Stack DS
+
+** Nearest greater to left
+#+begin_src cpp
+
+vector<int> arr = {1,5,3,2,4};
+stack<int> s;
+unordered_map<int,int> hash;
+vector<int> res;
+
+for(auto &x : arr){
+    while(s.size() && s.top() < x){
+        s.pop();
+    }
+    if(s.size() && x < s.top()) hash[x] = s.top();
+    s.push(x);
+}
+for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
+for(auto &x : res) cout << x << " ";
+
+#+end_src
+
+**  Nearest greater to right
+
+#+begin_src cpp
+
+vector<int> arr = {1,5,3,2,4};
+stack<int> s;
+unordered_map<int,int> hash;
+vector<int> res;
+
+for(auto &x : arr){
+    while(s.size() && s.top() < x){
+        hash[s.top()] = x;
+        s.pop();
+    }
+    s.push(x);
+}
+for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
+for(auto &x : res) cout << x << " ";
+
+#+end_src

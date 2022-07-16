@@ -1,0 +1,94 @@
+#+title: Linked List
+
+* Linked List
+
+**  Single Linked List
+
+*** At beginning of the list
+#+begin_src cpp
+
+class Node{
+    public:
+        int data;
+        Node* next;
+};
+
+Node* head;
+
+void Insert(int num){
+    Node* temp = new Node;
+    temp->data = num;
+    temp->next = head;
+    head = temp;
+}
+
+void Print(){
+    Node* temp = head;
+    while(temp != NULL){
+        cout << temp->data << " -> ";
+        temp = temp->next;
+    }
+}
+
+void solve(){
+    head = NULL;
+    int n;
+    cout << "Enter number of elements\n"; cin >> n;
+    for(int i = 0; i < n; i++){
+        int num;
+        cout << "Enter the number\n";
+        cin >> num;
+        Insert(num);
+        Print();
+        cout << "NULL\n";
+    }
+}
+#+end_src
+
+
+*** At nth position in the list
+#+begin_src cpp
+
+class Node{
+    public:
+        int data;
+        Node* next;
+};
+
+Node* head;
+
+void Insert(int num,int pos){
+    Node* temp = new Node;
+    temp->data = num;
+    temp->next = NULL;
+    if(pos==1){
+        temp->next = head;
+        head = temp;
+        return;
+    }
+    Node* temp2 = head;
+    for(int i = 1; i < pos - 1; i++){
+        temp2 = temp2->next;
+    }
+    temp->next = temp2->next;
+    temp2->next = temp;
+}
+
+void Print(){
+    Node* temp = head;
+    while(temp != NULL){
+        cout << temp->data << " -> ";
+        temp = temp->next;
+    }
+}
+
+void solve(){
+    head = NULL;
+    Insert(2,1);
+    Insert(3,2);
+    Insert(4,1);
+    Insert(5,2);
+    Print();
+    cout << "NULL";
+}
+#+end_src
