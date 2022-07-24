@@ -1,105 +1,95 @@
 
 # Table of Contents
 
-1.  [Stack DS](#orgd9408ac)
-    1.  [Nearest greater to left (unique elements)](#org5c00d2f)
-    2.  [Nearest greater to right (unique elements)](#org102aef2)
-    3.  [Nearest smaller to right (unique elements)](#orgdb88c70)
-    4.  [Nearest smaller to right (unique elements)](#org6381bb5)
-    5.  [Reverse string using stack](#org06de31e)
+1.  [Stack DS](#orgb863f80)
+    1.  [Nearest greater to left](#org6b70f5c)
+    2.  [Nearest greater to right](#org23fd375)
+    3.  [Nearest smaller to right](#org87e2009)
+    4.  [Nearest smaller to left](#orgdbf248a)
+    5.  [Reverse string using stack](#orge58e803)
+    6.  [Postfix expression evaluation](#orgbd2bc39)
+    7.  [Infix to postfix](#orgb25f3e2)
 
 
 
-<a id="orgd9408ac"></a>
+<a id="orgb863f80"></a>
 
 # Stack DS
 
 
-<a id="org5c00d2f"></a>
+<a id="org6b70f5c"></a>
 
-## Nearest greater to left (unique elements)
+## Nearest greater to left
 
     
-    vector<int> arr = {1,5,3,2,4};
-    stack<int> s;
-    unordered_map<int,int> hash;
-    vector<int> res;
-    
-    for(auto &x : arr){
-        while(s.size() && s.top() < x){
+    vector<int> arr = {1,3,2,4};
+    stack<int>s;
+    vector<int> res(arr.size(),-1);
+    for(int i = 0; i < arr.size(); i++){
+        while(s.size() && arr[s.top()] <= arr[i]){
             s.pop();
         }
-        if(s.size() && x < s.top()) hash[x] = s.top();
-        s.push(x);
+        if(s.size()) res[i] = arr[s.top()];
+        s.push(i);
     }
-    for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
     for(auto &x : res) cout << x << " ";
 
 
-<a id="org102aef2"></a>
+<a id="org23fd375"></a>
 
-## Nearest greater to right (unique elements)
+## Nearest greater to right
 
     
-    vector<int> arr = {1,5,3,2,4};
-    stack<int> s;
-    unordered_map<int,int> hash;
-    vector<int> res;
-    
-    for(auto &x : arr){
-        while(s.size() && s.top() < x){
-            hash[s.top()] = x;
+    vector<int> arr = {6,2,5,4,5,1,6};
+    stack<int>s;
+    vector<int> res(arr.size(),-1);
+    for(int i = 0; i < arr.size(); i++){
+        while(s.size() && arr[s.top()] < arr[i]){
+            res[s.top()] = arr[i];
             s.pop();
         }
-        s.push(x);
+        s.push(i);
     }
-    for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
     for(auto &x : res) cout << x << " ";
 
 
-<a id="orgdb88c70"></a>
+<a id="org87e2009"></a>
 
-## Nearest smaller to right (unique elements)
+## Nearest smaller to right
 
     
-    vector<int> arr = {1,5,3,2,4};
-    stack<int> s;
-    unordered_map<int,int> hash;
-    vector<int> res;
-    
-    for(auto &x : arr){
-        while(s.size() && s.top() > x){
-            hash[s.top()] = x;
+    vector<int> arr = {1,3,2,4};
+    stack<int>s;
+    vector<int> res(arr.size(),-1);
+    for(int i = 0; i < arr.size(); i++){
+        while(s.size() && arr[s.top()] > arr[i]){
+            res[s.top()] = arr[i];
             s.pop();
         }
-        s.push(x);
+        s.push(i);
     }
-    for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
     for(auto &x : res) cout << x << " ";
 
 
-<a id="org6381bb5"></a>
+<a id="orgdbf248a"></a>
 
-## Nearest smaller to right (unique elements)
+## Nearest smaller to left
 
     
-    vector<int> arr = {1,5,3,2,4};
-    stack<int> s;
-    unordered_map<int,int> hash;
-    vector<int> res;
-    
-    for(auto &x : arr){
-        while(s.size() && s.top() > x){
+    vector<int> arr = {1,3,2,4};
+    stack<int>s;
+    vector<int> res(arr.size(),-1);
+    for(int i = 0; i < arr.size(); i++){
+        while(s.size() && arr[s.top()] >= arr[i]){
             s.pop();
         }
-        if(s.size() && s.top() < x) hash[x] = s.top();
-        s.push(x);
+        if(s.size()) res[i] = arr[s.top()];
+        s.push(i);
     }
-    for(auto &x : arr) res.push_back( hash.find(x) != hash.end() ? hash[x] : -1);
     for(auto &x : res) cout << x << " ";
 
 
-<a id="org06de31e"></a>
+<a id="orge58e803"></a>
 
 ## Reverse string using stack
 
@@ -113,4 +103,86 @@
         s.pop();
     }
     cout << res;
+
+
+<a id="orgbd2bc39"></a>
+
+## Postfix expression evaluation
+
+    
+    string st = "23*54*+9-";
+    stack<int>s;
+    int res = 0;
+    for(int i = 0; i < st.length(); i++){
+        if(st[i] == '*' || st[i] == '+' || st[i] == '/' || st[i] == '-'){
+            int num1 = s.top();
+            s.pop();
+            int num2 = s.top();
+            s.pop();
+            if(st[i] == '+') res = num1 + num2;
+            else if(st[i] == '*') res = num1 * num2;
+            else if(st[i] == '-') res = num2 - num1;
+            else if(st[i] == '/') res = num2 / num1;
+            s.push(res);
+        }else{
+            s.push(st[i] - '0');
+        }
+    }
+    cout << res;
+
+
+<a id="orgb25f3e2"></a>
+
+## Infix to postfix
+
+    
+    bool isOperand(char& A){
+       if((A >= 97 && A <= 122) || (A >= 65 && A <= 90)) return true;
+       return false;
+    }
+    
+    bool isOpening(char& A){
+       if(A == '[' || A == '(' || A == '{') return true;
+       return false;
+    }
+    
+    
+    bool isClosing(char& A){
+       if(A == ']' || A == ')' || A == '}') return true;
+       return false;
+    }
+    
+    void solve(){
+        string st;
+        cin >> st;
+        stack<char>s;
+        string operators = "-+*/^";
+        unordered_map<char,int> Precedence;
+        string res = "";
+        for(unsigned int i = 0; i < operators.length(); i++) Precedence[operators[i]] = i + 1;
+        for(unsigned int i = 0; i < st.length(); i++){
+            if(isOperand(st[i])){
+                res += st[i];
+            }else if(st[i] == '-' || st[i] == '+' || st[i] == '*' || st[i] == '/' || st[i] == '^' ){
+                while(s.size() && Precedence[s.top()] > Precedence[st[i]] && !isOpening(st[i])){
+                    res += s.top();
+                    s.pop();
+                }
+                s.push(st[i]);
+            }else if(isOpening(st[i])){
+                s.push(st[i]);
+            }else{
+                while(s.size() && !isOpening(s.top())){
+                    res += s.top();
+                    s.pop();
+                }
+                if(s.size()) s.pop();
+            }
+        }
+        while(s.size() && !isOpening(s.top())){
+            res += s.top();
+            s.pop();
+        }
+        cout << res << endl;
+    }
 
